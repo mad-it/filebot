@@ -33,13 +33,12 @@ public class PGP {
 		}
 
 		// read public key
-		PGPPublicKeyRing publicKeyRing = new PGPPublicKeyRing(pub, new BcKeyFingerprintCalculator());
+		PGPPublicKeyRing publicKeyRing = new PGPPublicKeyRing(pub);
 		PGPPublicKey publicKey = publicKeyRing.getPublicKey();
 
 		// read signature
 		PGPSignatureList signatureList = (PGPSignatureList) new BcPGPObjectFactory(armoredInput).nextObject();
 		PGPSignature signature = signatureList.get(0);
-		signature.init(new BcPGPContentVerifierBuilderProvider(), publicKey);
 
 		// normalize clear sign message
 		String clearSignMessage = NEWLINE.splitAsStream(UTF_8.decode(content.getByteBuffer())).map(String::trim).collect(joining("\r\n"));
